@@ -13,9 +13,14 @@ helpers do
 end
 
 get "/" do
-  @deployments = Deployment.all
+  repo = Repo.load
+
+  @branches = repo.branches.map(&:name)
+  @deployments = Deployment.all(repo)
   @current = @deployments.first
-  @repo =
 
   slim :index
+end
+
+post "/deploy" do
 end
