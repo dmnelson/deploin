@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     daemons (1.2.2)
+    dotenv (2.0.1)
     eventmachine (1.0.7)
     git (1.2.9.1)
     rack (1.6.1)
@@ -25,6 +26,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   git
   sinatra
   slim
