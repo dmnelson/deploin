@@ -15,6 +15,6 @@ table.table.table-bordered.table-striped.table-hover
     - @deployments.each do |d|
       tr
         td= d.branch
-        td= d.commit_hash
+        td= d.commit_info.message
         td= d.time
         td= d.author

@@ -1,6 +1,7 @@
 require "sinatra"
 require "slim"
 require 'dotenv'
+require_relative "models/repo"
 require_relative "models/deployment"
 
 Dotenv.load
