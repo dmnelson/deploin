@@ -2,8 +2,10 @@ doctype html
 html
   head
     title My Slim Templates App
-    link(rel="stylesheet" href="css/bootstrap.css" type="text/css")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css")
     link(rel="stylesheet" href="css/application.css" type="text/css")
   body
     div.container
       == yield
+
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
