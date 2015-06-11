@@ -1,3 +1,24 @@
 .form-inline > * {
   margin-right: 5px;
 }
+
+ul.terminal {
+  background: #000;
+  font-family: Andale Mono, monospace;
+  color: #ccc;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 5px;
+  width: 100%;
+  overflow: hidden;
+  display: none;
+  height: 300px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+li.cursor {
+  background: #ccc;
+  width: 8px;
+  height: 19px;
+}

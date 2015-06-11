@@ -22,5 +22,16 @@ get "/" do
   slim :index
 end
 
-post "/deploy" do
+get "/deploy/*" do
+  content_type "text/event-stream"
+
+  branch = params[:splat].first
+  stream do |out|
+    out << "data: Deploying branch #{branch}\n\n"
+    30.times do |i|
+      out << "data: #{i} bottle(s) on a wall...\n\n"
+      sleep 0.5
+    end
+    out << "data: Deploy finished!\n\n"
+  end
 end
