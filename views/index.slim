@@ -1,0 +1,19 @@
+h1 Current Deployed:
+h2 Branch #{@current.branch} at #{@current.time} by #{@current.author}
+
+h1 Deployment History
+
+table
+  thead
+    tr
+      th Branch
+      th Commit
+      th When
+      th Author
+  tbody
+    - @deployments.each do |d|
+      tr
+        td= d.branch
+        td= d.commit_hash
+        td= d.time
+        td= d.author
