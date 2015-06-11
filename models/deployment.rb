@@ -7,7 +7,7 @@ class Deployment < Struct.new(:branch, :commit_hash, :timestamp, :author)
   end
 
   def self.log_file
-    "revisions.log"
+    ENV["REVISION_LOG"]
   end
 
   def self.from_log(log_line)
