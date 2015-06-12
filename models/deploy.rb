@@ -8,7 +8,7 @@ class Deploy
     @environment = environment
     @branch = branch
     @user = user
-    @repo = Repo.load()
+    @repo = Repo.load(log: log)
     @exec = Exec.new(cwd: @repo.dir, log: log)
   end
 
@@ -33,7 +33,7 @@ class Deploy
 
   def cap_deploy
     exec("cp example.env .env")
-    bundle("exec cap #{environment} deploy BRANCH=#{branch}")
+    #bundle("exec cap #{environment} deploy BRANCH=#{branch}")
   end
 
   def bundle(c)

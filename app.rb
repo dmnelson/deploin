@@ -4,6 +4,7 @@ require "dotenv"
 require "json"
 require_relative "models/repo"
 require_relative "models/deployment"
+require_relative "models/deploy"
 
 Dotenv.load
 
@@ -27,21 +28,30 @@ get "/" do
   slim :index
 end
 
+class StreamDecorator
+  def initialize(out)
+    @out = out
+  end
+
+  def write(args)
+    @out << args
+  end
+
+  def close
+    @out.close
+  end
+
+  def method_missing(method, *args, &block)
+    @out.send(method, *args, &block)
+  end
+end
+
 get "/deploy/*" do
   content_type "text/event-stream"
-
-  branch = params[:splat].first
+  branch = params[:splat].first or raise "Branch must be specified"
   stream do |out|
-
-    out << "event: start\n"
-    out << "data: " + { branch: branch, time: Time.now }.to_json + "\n\n"
-
-    10.times do |i|
-      out << "data: #{i} bottle(s) on a wall...\n\n"
-      sleep 0.5
-    end
-
-    out << "event: finish\n"
-    out << "data: #{Time.now}\n\n"
+    out << "Started at: #{Time.now}\n\n"
+    Deploy.new(branch: branch, log: Logger.new(StreamDecorator.new(out))).execute()
+    out << "Completed at: #{Time.now}\n\n"
   end
 end
