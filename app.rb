@@ -31,18 +31,22 @@ end
 class StreamDecorator
   def initialize(out)
     @out = out
+    @logger = Logger.new(STDOUT)
   end
 
-  def write(args)
-    @out << args
-  end
-
-  def close
-    @out.close
+  def start
+    self.info "Started at: #{Time.now}"
+    @out << "event: start\n"
   end
 
   def method_missing(method, *args, &block)
-    @out.send(method, *args, &block)
+    @logger.send(method, *args, &block)
+    @out << "data: #{args[0 ]}\n\n"
+  end
+
+  def finish
+    @out << "event: finish\n"
+    self.info "Completed at: #{Time.now}"
   end
 end
 
@@ -50,8 +54,10 @@ get "/deploy/*" do
   content_type "text/event-stream"
   branch = params[:splat].first or raise "Branch must be specified"
   stream do |out|
-    out << "Started at: #{Time.now}\n\n"
-    Deploy.new(branch: branch, log: Logger.new(StreamDecorator.new(out))).execute()
-    out << "Completed at: #{Time.now}\n\n"
+    stream = StreamDecorator.new(out)
+    stream.start
+    Deploy.new(branch: branch, log: stream).execute()
+    stream.info("Colorido: [0m[30mDEBUG[0m [[32m56c36123[0m] [32m	deb799edd0ad582814efa7f1508c5f2c57aab971	refs/pull/991/head")
+    stream.finish
   end
 end
