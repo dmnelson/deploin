@@ -1,10 +1,21 @@
 h2.page-header Current Deployed:
 
-h3 Branch #{@current.branch} at #{@current.time} by #{@current.author}
+h3 Branch #{@current.branch} authored #{time_ago_in_words(@current.time)} ago by #{@current.author}
 
 h2.page-header Deploy
 
 form.form-inline#deploy(action="/deploy" method="post")
+
+  .alert.alert-warning.deploy-in-progress-warning.hide(role="alert")
+    span.glyphicon.glyphicon-warning-sign>(aria-hidden="true")
+    span.sr-only Warning:
+    | Please wait until the current deploy is finished.
+
+  .alert.alert-danger.deploy-in-progress-error.hide(role="alert")
+    span.glyphicon.glyphicon-exclamation-sign>(aria-hidden="true")
+    span.sr-only Error:
+    | Deploy in progress. Please try again in few minutes.
+
   select.form-control#branch(name="branch" type="select")
     option(value="") Select a branch
     - @branches.each do |b|
@@ -12,6 +23,19 @@ form.form-inline#deploy(action="/deploy" method="post")
   button.btn.btn-primary.disabled(type="submit") Deploy
 
 ul.terminal
+  li.data
+  li.data
+  li.data
+  li.data=convert_spaces '             ___       __       ________      ________      ________          ___      ________       ________          '
+  li.data=convert_spaces '            |\\  \\     |\\  \\    |\\   __  \\    |\\   __  \\    |\\   __  \\        |\\  \\    |\\   ___  \\    |\\   ____\\         '
+  li.data=convert_spaces '            \\ \\  \\    \\ \\  \\   \\ \\  \\|\\  \\   \\ \\  \\|\\ /_   \\ \\  \\|\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\___|         '
+  li.data=convert_spaces '             \\ \\  \\  __\\ \\  \\   \\ \\  \\\\\\  \\   \\ \\   __  \\   \\ \\  \\\\\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\            '
+  li.data=convert_spaces '              \\ \\  \\|\\__\\_\\  \\   \\ \\  \\\\\\  \\   \\ \\  \\|\\  \\   \\ \\  \\\\\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\____   ___ '
+  li.data=convert_spaces '               \\ \\____________\\   \\ \\_______\\   \\ \\_______\\   \\ \\_______\\       \\ \\__\\   \\ \\__\\\\ \\__\\   \\ \\_______\\|\\__\\'
+  li.data=convert_spaces '                \\|____________|    \\|_______|    \\|_______|    \\|_______|        \\|__|    \\|__| \\|__|    \\|_______|\\|__|'
+  li.data
+  li.data
+  li.data
   li.cursor
 
 h2.page-header Deployment History
@@ -19,10 +43,10 @@ h2.page-header Deployment History
 table.table.table-bordered.table-striped.table-hover
   thead
     tr
-      th Branch
-      th Commit
-      th When
-      th Author
+      th.branch Branch
+      th.commit Commit
+      th.when When
+      th.author Author
   tbody
     - @deployments.each do |d|
       tr
@@ -31,5 +55,5 @@ table.table.table-bordered.table-striped.table-hover
         td
           a>(href=commit_url(d.commit_info))= d.commit_info.message
           | by #{d.commit_info.author.name}
-        td= d.time
+        td= "#{time_ago_in_words(d.time)} ago"
         td= d.author

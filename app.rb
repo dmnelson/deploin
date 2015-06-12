@@ -1,7 +1,8 @@
-require "sinatra"
-require "slim"
 require "dotenv"
 require "json"
+require "sinatra"
+require "slim"
+require 'timeywimey'
 require_relative "models/repo"
 require_relative "models/deployment"
 require_relative "models/deploy"
@@ -10,6 +11,14 @@ require_relative "models/stream_decorator"
 Dotenv.load
 
 helpers do
+  def convert_spaces(str)
+    str.gsub(' ',"\u00a0")
+  end
+
+  def time_ago_in_words(from_time)
+    Tw.time_ago_in_words from_time
+  end
+
   def commit_url(commit)
     "#{ENV['REPO_HOST_URL']}/#{ENV['REPO_OWNER']}/#{ENV['REPO_NAME']}/commit/#{commit.sha}"
   end
@@ -33,7 +42,7 @@ get "/" do
 end
 
 post "/deploy" do
-  raise "There is a deploy in progress already" if $semaphore.locked?
+  return (status 500 and body "DeployInProgress") if $semaphore.locked?
   branch = params[:branch] or raise "Branch must be specified"
 
   Thread.new do
@@ -51,8 +60,9 @@ get "/deploy" do
   stream do |out|
     $stream.subscribe(out)
 
-    while $stream.in_progress? do
-      sleep(0.5)
+    until out.closed?
+      $stream.publish("event: #{$stream.in_progress? ? "unavailable" : "available"}\ndata: \n\n")
+      sleep(1.5)
     end
   end
 end

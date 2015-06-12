@@ -21,3 +21,19 @@ li.cursor {
   width: 8px;
   height: 19px;
 }
+
+th.branch {
+  width: 30%;
+}
+
+th.commit {
+  width: 45%;
+}
+
+th.when {
+  width: 15%;
+}
+
+th.author {
+  width: 10%;
+}

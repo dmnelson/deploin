@@ -1,6 +1,8 @@
 $(document).ready(function() {
+  var available = true;
+
   $("#branch").change(function(e) {
-    $("#deploy").find(":submit").toggleClass("disabled", !$(this).val());
+    $("#deploy").find(":submit").toggleClass("disabled", !$(this).val() || !available);
   });
 
   appendToTerminal = function(item) {
@@ -15,6 +17,20 @@ $(document).ready(function() {
     appendToTerminal($("<li class=\"data\">" + e.data + "</li>"));
   };
 
+  source.addEventListener("available", function() {
+    available = true;
+
+    $('.deploy-in-progress-warning').toggleClass("hide", true);
+    $("#deploy").find(":submit").toggleClass("disabled", false);
+  })
+
+  source.addEventListener("unavailable", function() {
+    available = false;
+
+    $('.deploy-in-progress-warning').toggleClass("hide", false);
+    $("#deploy").find(":submit").toggleClass("disabled", true);
+  });
+
   $("#deploy").submit(function(e) {
     e.preventDefault();
 
@@ -24,8 +40,10 @@ $(document).ready(function() {
       url: "/deploy",
       method: "POST",
       data: $(this).serialize(),
+    }).done(function() {
+      terminal.find("li.data").remove();
     }).fail(function(data) {
-      alert("Error")
+      $('.deploy-in-progress-error').toggleClass("hide", data.responseText != "DeployInProgress")
     });
   });
 });
