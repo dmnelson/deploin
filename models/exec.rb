@@ -8,8 +8,11 @@ class Exec
   end
 
   def command(command)
-    @log.info "Executing: #{command} #{'at ' + @cwd.to_s if @cwd}"
-    Open3.popen2e(command, chdir: @cwd.to_s) do |stdin, stdout, status|
+    if @cwd
+      command = "cd #{@cwd} && #{command}"
+    end
+    @log.info "Executing: #{command}"
+    Open3.popen2e(command) do |stdin, stdout, status|
       while line = stdout.gets
         @log.info line
       end

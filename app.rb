@@ -2,6 +2,7 @@ require "sinatra"
 require "slim"
 require "dotenv"
 require "json"
+require "bcat/ansi"
 require_relative "models/repo"
 require_relative "models/deployment"
 require_relative "models/deploy"
@@ -41,7 +42,7 @@ class StreamDecorator
 
   def method_missing(method, *args, &block)
     @logger.send(method, *args, &block)
-    @out << "data: #{args[0 ]}\n\n"
+    @out << "data: #{Bcat::ANSI.new(args[0]).to_html}\n\n"
   end
 
   def finish
@@ -57,7 +58,6 @@ get "/deploy/*" do
     stream = StreamDecorator.new(out)
     stream.start
     Deploy.new(branch: branch, log: stream).execute()
-    stream.info("Colorido: [0m[30mDEBUG[0m [[32m56c36123[0m] [32m	deb799edd0ad582814efa7f1508c5f2c57aab971	refs/pull/991/head")
     stream.finish
   end
 end
