@@ -15,7 +15,7 @@ html
             li
               a(href="#history")
                 b> Current:
-                | Branch #{@current.branch} deployed #{time_ago_in_words(@current.time)} ago by #{@current.author}
+                | Branch #{@current.branch} was deployed #{time_ago_in_words(@current.time)} ago by #{@current.author}
     div.container-fluid
       == yield
 
