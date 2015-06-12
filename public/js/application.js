@@ -1,6 +1,10 @@
 $(document).ready(function() {
-  $("#deploy").submit(function(event) {
-    event.preventDefault();
+  $("#branch").change(function(e) {
+    $("#deploy").find(":submit").toggleClass("disabled", !$(this).val());
+  });
+
+  $("#deploy").submit(function(e) {
+    e.preventDefault();
 
     if (!confirm("Are you sure?")) return;
 
@@ -14,17 +18,19 @@ $(document).ready(function() {
     };
 
     source.onmessage = function(e) {
-      appendItem($("<li>" + e.data + "</li>"));
+      appendItem($("<li class=\"data\">" + e.data + "</li>"));
     };
 
     source.addEventListener("start", function(e) {
+      terminal.find("li.data").remove()
+
       data = JSON.parse(e.data);
-      appendItem($("<li>Deployment of " + data.branch + " started at " + data.time + "!</li>"));
+      appendItem($("<li class=\"data\">Deployment of " + data.branch + " started at " + data.time + "!</li>"));
     });
 
     source.addEventListener("finish", function(e) {
-      appendItem($("<li>Deploy finished successfully at " + e.data + "!</li>"));
+      appendItem($("<li class=\"data\">Deploy finished successfully at " + e.data + "!</li>"));
       source.close();
     });
-  })
-})
+  });
+});

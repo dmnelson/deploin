@@ -9,7 +9,7 @@ form.form-inline#deploy(action="/deploy" method="post")
     option(value="") Select a branch
     - @branches.each do |b|
       option= b
-  button.btn.btn-primary(type="submit") Deploy
+  button.btn.btn-primary.disabled(type="submit") Deploy
 
 ul.terminal
   li.cursor
