@@ -17,11 +17,9 @@ class Repo
   end
 
   def self.load(log: Logger.new(STDOUT))
-    @@_repo ||= begin
-      self.new Git.open(ENV["REPO_PATH"], log: log)
-    rescue
-      log.warn "No repo found - cloning from #{ENV['REPO_URL']}."
-      self.new Git.clone(ENV["REPO_URL"], "", path: ENV["REPO_PATH"])
-    end
+    self.new Git.open(ENV["REPO_PATH"], log: log)
+  rescue
+    log.warn "No repo found - cloning from #{ENV['REPO_URL']}."
+    self.new Git.clone(ENV["REPO_URL"], "", path: ENV["REPO_PATH"])
   end
 end

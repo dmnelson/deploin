@@ -12,9 +12,11 @@ class Deploy
     @user = user
     @repo = Repo.load(log: log)
     @exec = Exec.new(cwd: @repo.dir, log: log)
+    @log = log
   end
 
   def execute
+    log.info "Deploying #{branch} into #{environment}"
     pull_and_checkout
     bundle_install
     cap_deploy
@@ -22,7 +24,7 @@ class Deploy
 
   private
 
-  attr_reader :branch, :user, :repo, :environment
+  attr_reader :branch, :user, :repo, :environment, :log
 
   def pull_and_checkout
     repo.pull("origin", branch)
@@ -34,6 +36,7 @@ class Deploy
   end
 
   def cap_deploy
+    sleep(20)
     exec("cp example.env .env")
     #bundle("exec cap #{environment} deploy BRANCH=#{branch}")
   end

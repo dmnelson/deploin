@@ -29,12 +29,14 @@ $(document).ready(function() {
 
     $('.deploy-in-progress-warning').toggleClass("hide", false);
     $("#deploy").find(":submit").toggleClass("disabled", true);
+    terminal.removeClass("hide")
   });
 
   $("#deploy").submit(function(e) {
     e.preventDefault();
 
     if (!confirm("Are you sure?")) return;
+    terminal.removeClass("hide")
 
     $.ajax({
       url: "/deploy",

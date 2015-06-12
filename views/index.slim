@@ -1,51 +1,53 @@
-form.form-inline#deploy(action="/deploy" method="post")
-  .alert.alert-warning.deploy-in-progress-warning.hide(role="alert")
-    span.glyphicon.glyphicon-warning-sign>(aria-hidden="true")
-    span.sr-only Warning:
-    | Please wait until the current deploy is finished.
+.row
+  .col-lg-12
+    .alert.alert-warning.deploy-in-progress-warning.hide(role="alert")
+      span.glyphicon.glyphicon-warning-sign>(aria-hidden="true")
+      span.sr-only Warning:
+      | Please wait until the current deploy is finished.
 
-  .alert.alert-danger.deploy-in-progress-error.hide(role="alert")
-    span.glyphicon.glyphicon-exclamation-sign>(aria-hidden="true")
-    span.sr-only Error:
-    | Deploy in progress. Please try again in few minutes.
+    .alert.alert-danger.deploy-in-progress-error.hide(role="alert")
+      span.glyphicon.glyphicon-exclamation-sign>(aria-hidden="true")
+      span.sr-only Error:
+      | Deploy in progress. Please try again in few minutes.
 
-  select.form-control#branch(name="branch" type="select")
-    option(value="") Select a branch
-    - @branches.each do |b|
-      option= b
+    form.form-inline.pull-right#deploy(action="/deploy" method="post")
+      select.form-control#branch(name="branch" type="select")
+        option(value="") Select a branch
+        - @branches.each do |b|
+          option= b
 
-  a.btn.btn-default(href="refresh")
-    span.glyphicon.glyphicon-refresh>(aria-hidden="true")
-    | Refresh Branch List
-  button.btn.btn-primary.disabled(type="submit")
-    span.glyphicon.glyphicon-flash>(aria-hidden="true")
-    | Deploy
+      a.btn.btn-default(href="refresh")
+        span.glyphicon.glyphicon-refresh>(aria-hidden="true")
+        | Refresh Branch List
+      button.btn.btn-primary.disabled(type="submit")
+        span.glyphicon.glyphicon-flash>(aria-hidden="true")
+        | Deploy
 
-ul.terminal
-  li.data
-  li.data
-  li.data
-  li.data=convert_spaces '             ___       __       ________      ________      ________          ___      ________       ________          '
-  li.data=convert_spaces '            |\\  \\     |\\  \\    |\\   __  \\    |\\   __  \\    |\\   __  \\        |\\  \\    |\\   ___  \\    |\\   ____\\         '
-  li.data=convert_spaces '            \\ \\  \\    \\ \\  \\   \\ \\  \\|\\  \\   \\ \\  \\|\\ /_   \\ \\  \\|\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\___|         '
-  li.data=convert_spaces '             \\ \\  \\  __\\ \\  \\   \\ \\  \\\\\\  \\   \\ \\   __  \\   \\ \\  \\\\\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\            '
-  li.data=convert_spaces '              \\ \\  \\|\\__\\_\\  \\   \\ \\  \\\\\\  \\   \\ \\  \\|\\  \\   \\ \\  \\\\\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\____   ___ '
-  li.data=convert_spaces '               \\ \\____________\\   \\ \\_______\\   \\ \\_______\\   \\ \\_______\\       \\ \\__\\   \\ \\__\\\\ \\__\\   \\ \\_______\\|\\__\\'
-  li.data=convert_spaces '                \\|____________|    \\|_______|    \\|_______|    \\|_______|        \\|__|    \\|__| \\|__|    \\|_______|\\|__|'
-  li.data
-  li.data
-  li.data
-  li.cursor
 
-h2.page-header#history Deployment History
+ul.terminal.hide
+  li
+  li
+  li=convert_spaces '             ___       __       ________      ________      ________          ___      ________       ________          '
+  li=convert_spaces '            |\\  \\     |\\  \\    |\\   __  \\    |\\   __  \\    |\\   __  \\        |\\  \\    |\\   ___  \\    |\\   ____\\         '
+  li=convert_spaces '            \\ \\  \\    \\ \\  \\   \\ \\  \\|\\  \\   \\ \\  \\|\\ /_   \\ \\  \\|\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\___|         '
+  li=convert_spaces '             \\ \\  \\  __\\ \\  \\   \\ \\  \\\\\\  \\   \\ \\   __  \\   \\ \\  \\\\\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\            '
+  li=convert_spaces '              \\ \\  \\|\\__\\_\\  \\   \\ \\  \\\\\\  \\   \\ \\  \\|\\  \\   \\ \\  \\\\\\  \\       \\ \\  \\   \\ \\  \\\\ \\  \\   \\ \\  \\____   ___ '
+  li=convert_spaces '               \\ \\____________\\   \\ \\_______\\   \\ \\_______\\   \\ \\_______\\       \\ \\__\\   \\ \\__\\\\ \\__\\   \\ \\_______\\|\\__\\'
+  li=convert_spaces '                \\|____________|    \\|_______|    \\|_______|    \\|_______|        \\|__|    \\|__| \\|__|    \\|_______|\\|__|'
+  li
+  li.cursor.blink
+
+hr
+.well
+  h2#history Deployment History
 
 table.table.table-bordered.table-striped.table-hover
   thead
     tr
       th.branch Branch
-      th.commit Commit
+      th.commit Last Commit
       th.when When
-      th.author Author
+      th.author By
   tbody
     - @deployments.each do |d|
       tr
