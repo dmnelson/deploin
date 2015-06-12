@@ -2,10 +2,10 @@ require "sinatra"
 require "slim"
 require "dotenv"
 require "json"
-require "bcat/ansi"
 require_relative "models/repo"
 require_relative "models/deployment"
 require_relative "models/deploy"
+require_relative "models/stream_decorator"
 
 Dotenv.load
 
@@ -27,28 +27,6 @@ get "/" do
   @current = @deployments.first
 
   slim :index
-end
-
-class StreamDecorator
-  def initialize(out)
-    @out = out
-    @logger = Logger.new(STDOUT)
-  end
-
-  def start
-    self.info "Started at: #{Time.now}"
-    @out << "event: start\n"
-  end
-
-  def method_missing(method, *args, &block)
-    @logger.send(method, *args, &block)
-    @out << "data: #{Bcat::ANSI.new(args[0]).to_html}\n\n"
-  end
-
-  def finish
-    @out << "event: finish\n"
-    self.info "Completed at: #{Time.now}"
-  end
 end
 
 get "/deploy/*" do
