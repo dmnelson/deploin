@@ -41,6 +41,11 @@ get "/" do
   slim :index
 end
 
+get "/refresh" do
+  Repo.load.fetch
+  redirect "/"
+end
+
 post "/deploy" do
   return (status 500 and body "DeployInProgress") if $semaphore.locked?
   branch = params[:branch] or raise "Branch must be specified"

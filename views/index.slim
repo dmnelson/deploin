@@ -14,7 +14,7 @@ form.form-inline#deploy(action="/deploy" method="post")
     - @branches.each do |b|
       option= b
 
-  button.btn.btn-default.disabled(type="submit")
+  a.btn.btn-default(href="refresh")
     span.glyphicon.glyphicon-refresh>(aria-hidden="true")
     | Refresh Branch List
   button.btn.btn-primary.disabled(type="submit")
