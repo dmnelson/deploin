@@ -19,6 +19,9 @@ helpers do
   end
 end
 
+$semaphore = Mutex.new
+$stream = StreamDecorator.new
+
 get "/" do
   repo = Repo.load
 
@@ -29,13 +32,28 @@ get "/" do
   slim :index
 end
 
-get "/deploy/*" do
+post "/deploy" do
+  raise "There is a deploy in progress already" if $semaphore.locked?
+  branch = params[:branch] or raise "Branch must be specified"
+
+  Thread.new do
+    $semaphore.synchronize do
+      $stream.start
+      Deploy.new(branch: branch, log: $stream).execute
+      $stream.info("Colorido: [0m[30mDEBUG[0m [[32m56c36123[0m] [32m deb799edd0ad582814efa7f1508c5f2c57aab971  refs/pull/991/head")
+      $stream.finish
+    end
+  end
+end
+
+get "/deploy" do
   content_type "text/event-stream"
-  branch = params[:splat].first or raise "Branch must be specified"
+
   stream do |out|
-    stream = StreamDecorator.new(out)
-    stream.start
-    Deploy.new(branch: branch, log: stream).execute()
-    stream.finish
+    $stream.subscribe(out)
+
+    while $stream.in_progress? do
+      sleep(0.5)
+    end
   end
 end

@@ -5,6 +5,8 @@ require_relative "exec"
 class Deploy
 
   def initialize(environment: "staging", branch: "master", user: nil, log: Logger.new(STDOUT))
+    puts Dir.pwd
+
     @environment = environment
     @branch = branch
     @user = user
