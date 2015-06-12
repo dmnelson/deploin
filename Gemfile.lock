@@ -36,6 +36,3 @@ DEPENDENCIES
   sinatra
   slim
   thin
-
-BUNDLED WITH
-   1.10.3

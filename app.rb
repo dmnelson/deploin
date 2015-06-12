@@ -40,7 +40,6 @@ post "/deploy" do
     $semaphore.synchronize do
       $stream.start
       Deploy.new(branch: branch, log: $stream).execute
-      $stream.info("Colorido: [0m[30mDEBUG[0m [[32m56c36123[0m] [32m deb799edd0ad582814efa7f1508c5f2c57aab971  refs/pull/991/head")
       $stream.finish
     end
   end
