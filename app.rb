@@ -1,6 +1,7 @@
 require "sinatra"
 require "slim"
-require 'dotenv'
+require "dotenv"
+require "json"
 require_relative "models/repo"
 require_relative "models/deployment"
 
@@ -27,11 +28,16 @@ get "/deploy/*" do
 
   branch = params[:splat].first
   stream do |out|
-    out << "data: Deploying branch #{branch}\n\n"
-    30.times do |i|
+
+    out << "event: start\n"
+    out << "data: " + { branch: branch, time: Time.now }.to_json + "\n\n"
+
+    10.times do |i|
       out << "data: #{i} bottle(s) on a wall...\n\n"
       sleep 0.5
     end
-    out << "data: Deploy finished!\n\n"
+
+    out << "event: finish\n"
+    out << "data: #{Time.now}\n\n"
   end
 end
