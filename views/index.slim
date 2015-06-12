@@ -1,11 +1,4 @@
-h2.page-header Current Deployed:
-
-h3 Branch #{@current.branch} authored #{time_ago_in_words(@current.time)} ago by #{@current.author}
-
-h2.page-header Deploy
-
 form.form-inline#deploy(action="/deploy" method="post")
-
   .alert.alert-warning.deploy-in-progress-warning.hide(role="alert")
     span.glyphicon.glyphicon-warning-sign>(aria-hidden="true")
     span.sr-only Warning:
@@ -20,7 +13,13 @@ form.form-inline#deploy(action="/deploy" method="post")
     option(value="") Select a branch
     - @branches.each do |b|
       option= b
-  button.btn.btn-primary.disabled(type="submit") Deploy
+
+  button.btn.btn-default.disabled(type="submit")
+    span.glyphicon.glyphicon-refresh>(aria-hidden="true")
+    | Refresh Branch List
+  button.btn.btn-primary.disabled(type="submit")
+    span.glyphicon.glyphicon-flash>(aria-hidden="true")
+    | Deploy
 
 ul.terminal
   li.data
@@ -38,7 +37,7 @@ ul.terminal
   li.data
   li.cursor
 
-h2.page-header Deployment History
+h2.page-header#history Deployment History
 
 table.table.table-bordered.table-striped.table-hover
   thead

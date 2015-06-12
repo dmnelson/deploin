@@ -1,11 +1,22 @@
 doctype html
 html
   head
-    title My Slim Templates App
-    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css")
+    title Deploin
+    /link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css")
+    link(rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css" type="text/css")
     link(rel="stylesheet" href="css/application.css" type="text/css")
   body
-    div.container
+    nav.navbar.navbar-inverse
+      div.container-fluid
+        div.navbar-header
+          a.navbar-brand(href="/") Deploin
+        div.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href="#history")
+                b> Current:
+                | Branch #{@current.branch} deployed #{time_ago_in_words(@current.time)} ago by #{@current.author}
+    div.container-fluid
       == yield
 
   script(src="http://code.jquery.com/jquery-2.1.4.min.js")

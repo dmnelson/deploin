@@ -2,7 +2,7 @@ class Deployment < Struct.new(:repo, :branch, :commit_hash, :timestamp, :author)
   REGEX = /^Branch (?<branch>.+?) \(at (?<commit_hash>\w+)\) deployed as release (?<timestamp>\d+) by (?<author>.+?);/
 
   def time
-    Time.parse(timestamp)
+    DateTime.parse(timestamp).to_time
   end
 
   def commit_info

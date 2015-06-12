@@ -22,8 +22,8 @@ class StreamDecorator
   end
 
   def finish
-    publish "event: finish\n"
     self.info "Completed at: #{Time.now}"
+    publish "event: finish\n"
 
     @in_progress = false
     @history.clear

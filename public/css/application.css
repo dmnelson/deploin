@@ -2,6 +2,10 @@
   margin-right: 5px;
 }
 
+select#branch {
+  max-width: 300px;
+}
+
 ul.terminal {
   background: #000;
   font-family: Andale Mono, monospace;
