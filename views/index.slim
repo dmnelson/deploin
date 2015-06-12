@@ -26,7 +26,8 @@ table.table.table-bordered.table-striped.table-hover
   tbody
     - @deployments.each do |d|
       tr
-        td= d.branch
+        td
+          a(href=branch_url(d.branch))= d.branch
         td
           a>(href=commit_url(d.commit_info))= d.commit_info.message
           | by #{d.commit_info.author.name}

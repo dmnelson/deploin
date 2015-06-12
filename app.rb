@@ -11,6 +11,10 @@ helpers do
   def commit_url(commit)
     "#{ENV['REPO_HOST_URL']}/#{ENV['REPO_OWNER']}/#{ENV['REPO_NAME']}/commit/#{commit.sha}"
   end
+
+  def branch_url(branch)
+    "#{ENV['REPO_HOST_URL']}/#{ENV['REPO_OWNER']}/#{ENV['REPO_NAME']}/tree/#{branch}"
+  end
 end
 
 get "/" do
