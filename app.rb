@@ -3,6 +3,7 @@ require "json"
 require "sinatra"
 require "slim"
 require 'timeywimey'
+require 'figlet'
 require_relative "models/repo"
 require_relative "models/deployment"
 require_relative "models/deploy"
@@ -13,6 +14,10 @@ Dotenv.load
 helpers do
   def convert_spaces(str)
     str.gsub(' ',"\u00a0")
+  end
+
+  def hello
+    Figlet::Typesetter.new(Figlet::Font.new("vendor/3D-ASCII.flf"))["Wobo Inc"]
   end
 
   def time_ago_in_words(from_time)

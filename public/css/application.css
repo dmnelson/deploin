@@ -14,11 +14,14 @@ ul.terminal {
   margin-bottom: 15px;
   padding: 10px;
   width: 100%;
-  overflow: hidden;
   height: 500px;
   overflow: auto;
+  white-space: pre-wrap;
 }
 
+li.banner {
+  text-align: center;
+}
 li.cursor {
   background: #ccc;
   width: 8px;
