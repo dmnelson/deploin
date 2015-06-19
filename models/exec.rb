@@ -1,5 +1,6 @@
 require "open3"
 require "logger"
+require "dotenv"
 
 class Exec
   def initialize(log: Logger.new(STDOUT), cwd: nil)
@@ -9,14 +10,17 @@ class Exec
 
   def command(command)
     if @cwd
-      command = "cd #{@cwd} && #{command}"
+      command = "cd #{@cwd} && ( #{command} )"
     end
     @log.info "Executing: #{command}"
-    Open3.popen2e(command) do |stdin, stdout, status|
-      while line = stdout.gets
-        @log.info line
+    Bundler.with_clean_env do
+      Dotenv.load
+      Open3.popen2e(command) do |stdin, stdout, status|
+        while line = stdout.gets
+          @log.info line
+        end
+        status.value.success?
       end
-      status.value.success?
     end
   end
 end

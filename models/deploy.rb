@@ -36,9 +36,8 @@ class Deploy
   end
 
   def cap_deploy
-    sleep(20)
     exec("cp example.env .env")
-    #bundle("exec cap #{environment} deploy BRANCH=#{branch}")
+    bundle("exec cap #{environment} deploy BRANCH=#{branch}")
   end
 
   def bundle(c)
