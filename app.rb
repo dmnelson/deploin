@@ -61,7 +61,7 @@ class App < Sinatra::Base
 
   helpers do
     def hello
-      Figlet::Typesetter.new(Figlet::Font.new("vendor/3D-ASCII.flf"))["Wobo Inc"]
+      Figlet::Typesetter.new(Figlet::Font.new("vendor/3D-ASCII.flf"))[ENV["HELLO_MSG"]]
     end
 
     def time_ago_in_words(from_time)
