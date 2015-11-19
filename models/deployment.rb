@@ -6,7 +6,7 @@ class Deployment < Struct.new(:repo, :branch, :commit_hash, :timestamp, :author)
   end
 
   def commit_info
-    repo.commit_info(commit_hash)
+    @_cinfo ||= repo.commit_info(commit_hash) rescue nil
   end
 
   def self.log_file
