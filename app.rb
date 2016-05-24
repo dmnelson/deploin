@@ -5,6 +5,7 @@ require "slim"
 require 'timeywimey'
 require 'figlet'
 require_relative "models/repo"
+require_relative "models/commit"
 require_relative "models/deployment"
 require_relative "models/deploy"
 require_relative "models/stream_decorator"

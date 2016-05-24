@@ -27,8 +27,8 @@ class Deploy
   attr_reader :branch, :user, :repo, :environment, :log
 
   def pull_and_checkout
-    repo.pull("origin", branch)
     repo.checkout(branch)
+    repo.pull("origin", branch)
   end
 
   def bundle_install

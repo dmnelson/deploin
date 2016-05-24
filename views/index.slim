@@ -48,6 +48,6 @@ table.table.table-bordered.table-striped.table-hover
           a(href=branch_url(d.branch))= d.branch
         td
           a>(href=commit_url(d.commit_info))= d.commit_info.message
-          | by #{d.commit_info.author.name}
+          | by #{d.commit_info.author}
         td= "#{time_ago_in_words(d.time)} ago"
         td= d.author

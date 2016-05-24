@@ -4,12 +4,12 @@ require "logger"
 class Repo
   attr_reader :repo
 
-  def initialize(repo, log: log)
+  def initialize(repo, log: )
     @repo = Git.open(repo, log: log)
   end
 
   def commit_info(hash)
-    gcommit(hash)
+    Commit.new hash, gcommit(hash)
   end
 
   def method_missing(method, *args, &block)
