@@ -37,6 +37,7 @@ hr
 table.table.table-bordered.table-striped.table-hover
   thead
     tr
+      th.release Release
       th.branch Branch
       th.commit Last Commit
       th.when When
@@ -44,10 +45,18 @@ table.table.table-bordered.table-striped.table-hover
   tbody
     - @deployments.each do |d|
       tr
-        td
-          a(href=branch_url(d.branch))= d.branch
-        td
-          a>(href=commit_url(d.commit_info))= d.commit_info.message
-          | by #{d.commit_info.author}
-        td= "#{time_ago_in_words(d.time)} ago"
-        td= d.author
+        - unless d.rollback?
+          td(id="release_#{d.timestamp}")=d.timestamp
+          td
+            a(href=branch_url(d.branch))= d.branch
+          td
+            a>(href=commit_url(d.commit_info))= d.commit_info.message
+            | by #{d.commit_info.author}
+          td= "#{time_ago_in_words(d.time)} ago"
+          td= d.author
+        - else
+          td
+            a(href="#release_#{d.timestamp}")=d.timestamp
+          td(colspan=3)> Rollback
+          td= d.author
+
