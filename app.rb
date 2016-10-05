@@ -19,7 +19,7 @@ class App < Sinatra::Base
   get "/" do
     repo = Repo.load
 
-    @branches = repo.branches.map(&:name)
+    @branches = repo.branches.remote.map(&:name)
     @deployments = Deployment.all(repo)
     @current = @deployments.first
 
